@@ -17,6 +17,7 @@ const userError = ref(null);
 
 watch(post, async (newPost) => {
   if (newPost && newPost.userId) {
+    console.log(newPost.userId);
     const { isLoading, data, error } = useFetch(
       "https://jsonplaceholder.typicode.com/users/",
       newPost.userId
@@ -33,10 +34,10 @@ console.log(post);
 
 <template>
   <div>
-    <div v-if="isLoadingPost">Loading...</div>
+    <div v-if="isLoadingPost || isLoadingPost">Loading...</div>
     <div v-else>
       <h1 class="text-3xl">{{ post.title }}</h1>
-      <div class="text-gray-500 mb-10">by {{ user.value.username }}</div>
+      <div class="text-gray-500 mb-10">by {{ user?.value?.username }}</div>
       <div>{{ post.body }}</div>
     </div>
     <RouterLink :to="{ name: 'Home' }">Back to Home</RouterLink>
