@@ -1,16 +1,12 @@
+<script setup>
+const props = defineProps({
+  post: Object,
+});
+const post = { ...props.post };
+</script>
 <template>
   <div
-    class="
-      flex
-      m-2
-      gap-2
-      items-center
-      shadow-md
-      w-1/4
-      flex-grow
-      rounded
-      overflow-hidden
-    "
+    class="flex m-2 gap-2 items-center shadow-md w-1/4 flex-grow rounded overflow-hidden"
     style="border: 1px solid #eee"
   >
     <img
@@ -24,9 +20,3 @@
     </router-link>
   </div>
 </template>
-<script setup>
-const props = defineProps({
-  post: Object,
-});
-const post = { ...props.post };
-</script>

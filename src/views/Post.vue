@@ -1,17 +1,44 @@
+<script setup>
+import { ref, watch } from "vue";
+import { RouterLink, useRoute } from "vue-router";
+import { useFetch } from "../composables/useFetch";
+
+const id = useRoute().params.id;
+
+const {
+  isLoading: isLoadingPost,
+  data: post,
+  error: postError,
+} = useFetch("https://jsonplaceholder.typicode.com/posts/", id);
+
+const isLoadingUser = ref(false);
+const user = ref(null);
+const userError = ref(null);
+
+watch(post, async (newPost) => {
+  if (newPost && newPost.userId) {
+    const { isLoading, data, error } = useFetch(
+      "https://jsonplaceholder.typicode.com/users/",
+      newPost.userId
+    );
+    isLoadingUser.value = isLoading;
+    user.value = data;
+    userError.value = error;
+  }
+});
+
+console.log(user);
+console.log(post);
+</script>
+
 <template>
-  <div v-if="post && user">
-    <h1 class="text-3xl">{{ post.title }}</h1>
-    <div class="text-gray-500 mb-10">by {{ user.name }}</div>
-    <div>{{ post.body }}</div>
+  <div>
+    <div v-if="isLoadingPost">Loading...</div>
+    <div v-else>
+      <h1 class="text-3xl">{{ post.title }}</h1>
+      <div class="text-gray-500 mb-10">by {{ user.value.username }}</div>
+      <div>{{ post.body }}</div>
+    </div>
+    <RouterLink :to="{ name: 'Home' }">Back to Home</RouterLink>
   </div>
 </template>
-<script setup>
-const post = {
-  title:
-    "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  body: "quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto",
-};
-const user = {
-  name: "Leanne Graham",
-};
-</script>
